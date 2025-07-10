@@ -20,9 +20,17 @@
 <script setup lang="ts">
 import EventCard from '../components/EventCard.vue'
 import EventInfo from '../components/EventInfo.vue'
-import { ref } from 'vue'   
+import { ref,onMounted } from 'vue'
+import axios from 'axios'
+const events = ref<Event[]>([])
 
-
+onMounted(() => {
+  axios
+    .get('[your mock server url]')
+    .then((response) => {
+      events.value = response.data
+    })
+})
 
 // Define the Event type inline if ../types doesn't exist
 interface Event {
@@ -36,11 +44,6 @@ interface Event {
   petsAllowed: boolean;
   organizer: string;
 }
-
-// Use relative path instead of alias until alias is properly configured
-import data from '../data/db.json'
-const events = ref<Event[]>(data.events)
-
 </script>
 
 <style scoped>
